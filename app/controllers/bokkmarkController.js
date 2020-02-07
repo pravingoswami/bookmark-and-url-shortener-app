@@ -9,18 +9,25 @@ module.exports.list = (req, res) => {
 }
 
 module.exports.create = (req, res) => {
+
     const body = req.body
-    const url = validator.isURL(body.originalURL, { protocols: ['http','https','ftp'], require_tld: true, require_protocol: false, require_host: true, require_valid_protocol: true, allow_underscores: false, host_whitelist: false, host_blacklist: false, allow_trailing_dot: false, allow_protocol_relative_urls: false, disallow_auth: false })
-    if(url){
-        body.hashedURL = sh.unique(body.originalURL)
-        const bookmark = new Bookmark(body)
-        bookmark.save()
-            .then(bookmark => res.json(bookmark))
-            .catch(err => res.json(err))
-    }
-    else {
-        res.json({error : "Enter Valid URL"})
-    }
+    const bookmark = new Bookmark(body)
+    bookmark.save()
+        .then(bookmark => res.json(bookmark))
+        .catch(err => res.json(err))
+
+    // const body = req.body
+    // const url = validator.isURL(body.originalURL, { protocols: ['http','https','ftp'], require_tld: true, require_protocol: false, require_host: true, require_valid_protocol: true, allow_underscores: false, host_whitelist: false, host_blacklist: false, allow_trailing_dot: false, allow_protocol_relative_urls: false, disallow_auth: false })
+    // if(url){
+    //     body.hashedURL = sh.unique(body.originalURL)
+    //     const bookmark = new Bookmark(body)
+    //     bookmark.save()
+    //         .then(bookmark => res.json(bookmark))
+    //         .catch(err => res.json(err))
+    // }
+    // else {
+    //     res.json({error : "Enter Valid URL"})
+    // }
 }
 
 module.exports.show = (req, res) => {

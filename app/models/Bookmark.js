@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const sh = require("shorthash")
+const validator = require('validator')
 
 const Schema = mongoose.Schema
 
@@ -10,7 +12,15 @@ const bookmarkSchema = new Schema({
 
     originalURL : {
         type : String,
-        required : true
+        required : true,
+        validate : {
+            validator : function(value){
+                return validator.isURL(value)
+            },
+            message : function(){
+                return 'Enter valid url'
+            }
+        }
     },
 
     tags : {
@@ -24,6 +34,17 @@ const bookmarkSchema = new Schema({
     createdAt : {
         type : Date,
         default : Date.now()
+    }
+
+})
+
+bookmarkSchema.pre('save', function(next){
+    const bookmark = this
+    if(bookmark.isNew){
+        bookmark.hashedURL = sh.unique(bookmark.originalURL)
+        next()
+    } else {
+        next()
     }
 
 })

@@ -14,6 +14,7 @@ router.post('/bookmarks', bookmarkController.create)
 router.get('/bookmarks/:id', bookmarkController.show)
 router.put('/bookmarks/:id', bookmarkController.update)
 router.delete('/bookmarks/:id', bookmarkController.destroy)
+
 router.get('/:hash', bookmarkController.hash)
 
 
